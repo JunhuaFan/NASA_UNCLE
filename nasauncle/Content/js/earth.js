@@ -12,6 +12,9 @@ let enlargeTime = 0;
 var userLatitude = 0;
 var userLongitude = 0;
 
+//危險區域資料
+let dangerAreaData;
+
 //取得世界地圖 world.json (TopoJSON格式)
 d3.json("/Content/data/world.json", function (world) {
 
@@ -56,7 +59,7 @@ d3.json("/Content/data/world.json", function (world) {
             rotate = projection.rotate();
             projection.rotate([d3.event.x, -d3.event.y, rotate[2]]);
             d3.select("#svg").selectAll("path").attr("d", path);
-            updateDangerAreaLocation();
+            //updateDangerAreaLocation(dangerAreaData);
         }));
 });
 
@@ -74,6 +77,7 @@ $("#enlargeBtn").click(function() {
     heightPixNew = parseInt(heightPixOrg) * 1.2;
     $("#svg").attr("height", heightPixNew + "px");
     $("#svg").css("margin-top", parseInt($("#svg").css("margin-top")) - (heightPixOrg * 0.1) + "px");
+    $("#svg").css("margin-bottom", parseInt($("#svg").css("margin-bottom")) - (heightPixOrg * 0.1) + "px");
 
     enlargeTime = enlargeTime + 1;    
 });
@@ -95,17 +99,22 @@ $("#shrinkdownBtn").click(function() {
     heightPixNew = parseInt(heightPixOrg) / 1.2;
     $("#svg").attr("height", heightPixNew + "px");
     $("#svg").css("margin-top", parseInt($("#svg").css("margin-top")) + ((heightPixOrg / 1.2) * 0.1) + "px");
+    $("#svg").css("margin-bottom", parseInt($("#svg").css("margin-bottom")) + ((heightPixOrg / 1.2) * 0.1) + "px");
 
     enlargeTime = enlargeTime - 1;
 });
 
 //取得目前使用者所在位置經緯度
-function getLocation(defer) {
-    if (navigator.geolocation) {//
-        navigator.geolocation.getCurrentPosition(savePositionAndMarkOnEarth);//有拿到位置就呼叫 showPosition 函式
-    } else {
-        m.innerHTML = "您的瀏覽器不支援 顯示地理位置 API ，請使用其它瀏覽器開啟 這個網址";
-    }
+function getLocation() {
+    //if (navigator.geolocation) {//
+    //    navigator.geolocation.getCurrentPosition(savePositionAndMarkOnEarth);//有拿到位置就呼叫 showPosition 函式
+    //} else {
+    //    m.innerHTML = "您的瀏覽器不支援 顯示地理位置 API ，請使用其它瀏覽器開啟 這個網址";
+    //}
+    let position = {coords: {}};
+    position.coords.latitude = 25.021743299999997;
+    position.coords.longitude = 121.53536629999999;
+    savePositionAndMarkOnEarth(position);
 }
 
 //將使用者目前徑緯度標示在地球上.
@@ -152,7 +161,7 @@ function showPosition(position) {
 //取得危險區資料
 function getDangerAreaData() {
 
-    let dangerAreaData;
+    //let dangerAreaData;
 
     $.get("http://52.220.233.218/Resource/getData",
             {},
