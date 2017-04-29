@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "importExcel";
+}
+
+
+
+
+<h2>匯入檔案</h2>
+
+
+
+
+
+@using (Html.BeginForm("importExcel", "Resource", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <h1 class="page-title subF1font call-outline_0">序號 <span>匯入</span></h1>
+
+
+                            <div class="form-group ">
+                                <label for="inputEmail3" class="col-sm-3 control-label">範本下載：</label>
+                                <div class="col-sm-9">
+                                    
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <label for="inputEmail3" class="col-sm-3 control-label">上傳excel：</label>
+                                <div class="col-sm-9">
+                                    <input type="file" name="fileuploadExcel" id="fileuploadExcel" class="form-control" />
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+
+                                    <input type="submit" value="送出！" class="btn btn-primary" />
+                                </div>
+                            </div>
+}
