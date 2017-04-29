@@ -26,5 +26,10 @@ namespace nasauncle.Controllers
 
             return View();
         }
+
+        public ActionResult Earth()
+        {
+            return View();
+        }
     }
 }
