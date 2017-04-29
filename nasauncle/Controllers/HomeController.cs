@@ -42,5 +42,14 @@ namespace nasauncle.Controllers
         {
             return View();
         }
+
+        public String getDangerData() {
+
+            return 
+            "[" +
+                "{\"Latitude\":123.456, \"Longitude\":123.456, \"good\":[\"釣魚\",\"游泳\"], \"bad\":[\"\"], \"UV\":1 }," +
+                "{\"Latitude\":123.456, \"Longitude\":123.456, \"good\":[\"釣魚\"], \"bad\":[\"游泳\"], \"UV\":2}"+
+            "]";
+        }
     }
 }
