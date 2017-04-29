@@ -1,5 +1,17 @@
+$(document).ready(function () {
+    console.log("ready!");
+
+    //取得目前使用者所在位置經緯度
+    getLocation();
+
+});
+
 //記錄放大縮小倍數
 let enlargeTime = 0;
+
+//使用者所在座標
+var userLatitude = 0;
+var userLongitude = 0;
 
 //取得世界地圖 world.json (TopoJSON格式)
 d3.json("/Content/data/world.json", function (world) {
@@ -96,7 +108,7 @@ d3.json("/Content/data/world.json", function (world) {
     };
 
     //=>執行到此行後, N個黑點 己 改為 紅色圈圈.(但大小不會變, 原因還要查!)
-    updateDangerAreaLocation();
+    updateDangerAreaLocation();    
 
     //當有托拉地球儀時, 進行旋轉.
     d3.select("#svg").call(d3.behavior.drag()
@@ -127,21 +139,7 @@ $("#enlargeBtn").click(function() {
     $("#svg").attr("height", heightPixNew + "px");
     $("#svg").css("margin-top", parseInt($("#svg").css("margin-top")) - (heightPixOrg * 0.1) + "px");
 
-    enlargeTime = enlargeTime + 1;
-    
-    //let width = $("#svg").attr("width");
-    //width = width.slice(0, -1);
-    //width = parseInt(width) + 20;
-    //$("#svg").attr("width", width + "%");
-    //$("#svg").css("margin-left",  (parseInt($("#svg").css("margin-left")) - 10) + "%");
-    ////window.alert("width=" + $("#svg").attr("width"));
-
-    //let height = $("#svg").attr("height");
-    //height = height.slice(0, -1);
-    //height = parseInt(height) + 20;
-    //$("#svg").attr("height", height + "%");
-    //$("#svg").css("margin-top", (parseInt($("#svg").css("margin-top")) - 10) + "%");
-    ////window.alert("height=" + $("#svg").attr("height"));
+    enlargeTime = enlargeTime + 1;    
 });
 
 //縮小
@@ -163,17 +161,51 @@ $("#shrinkdownBtn").click(function() {
     $("#svg").css("margin-top", parseInt($("#svg").css("margin-top")) + ((heightPixOrg / 1.2) * 0.1) + "px");
 
     enlargeTime = enlargeTime - 1;
-
-    //let width = $("#svg").attr("width");
-    //width = width.slice(0, -1);
-    //width = parseInt(width) - 10;
-    //$("#svg").attr("width", width + "%");
-    ////window.alert("width=" + $("#svg").attr("width"));
-
-    //let height = $("#svg").attr("height");
-    //height = height.slice(0, -1);
-    //height = parseInt(height) - 10;
-    //$("#svg").attr("height", height + "%");
-    ////window.alert("height=" + $("#svg").attr("height"));
-
 });
+
+//取得目前使用者所在位置經緯度
+function getLocation(defer) {
+    if (navigator.geolocation) {//
+        navigator.geolocation.getCurrentPosition(savePositionAndMarkOnEarth);//有拿到位置就呼叫 showPosition 函式
+    } else {
+        m.innerHTML = "您的瀏覽器不支援 顯示地理位置 API ，請使用其它瀏覽器開啟 這個網址";
+    }
+}
+
+//取得使用者目前徑緯度並標示在地球上.
+function savePositionAndMarkOnEarth(position) {
+
+    //緯度 (Latitude)
+    userLatitude = position.coords.latitude;
+
+    //經度 (Longitude)
+    userLongitude = position.coords.longitude;
+
+    //目前使用者座標點.
+    var nowUserAxis = {
+        features: [{
+            "type": "Feature",
+            "properties": { "mag": 3, "time": 1430470821000 },
+            "geometry": { "type": "Point", "coordinates": [userLongitude, userLatitude, 11.5] }
+        }]
+    };
+
+    //建立『危險區』的g群組.
+    d3.select("#svg").selectAll("g.nowUserAxis").data(nowUserAxis.features)
+        .enter().append("g").attr("class", "nowUserAxis");
+
+    //在每個『『危險區』的g群組』後加一個『危險區的<path> tag』
+    //=>執行到此行後, 己可在地球儀上看到N個黑點!
+    var circleDangerArea = d3.select("#svg").selectAll("g.nowUserAxis").append("path");
+
+    //顯示使用者所在位置經緯度
+    showPosition(position);
+}
+
+//顯示使用者所在位置經緯度
+function showPosition(position) {
+    var m = document.getElementById("msg");
+    m.innerHTML = "目前位置 緯度: " + position.coords.latitude +
+                ", 經度: " + position.coords.longitude;
+}
+
