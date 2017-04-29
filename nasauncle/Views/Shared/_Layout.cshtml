@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title  - Nasa 大叔度</title>
+    <title>@ViewBag.Title  - Nasa 大叔隊</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -25,7 +25,7 @@
             <div class="navbar-collapse collapse">
                 
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("全球", "Earth", "Home")</li>
+                    <li>@Html.ActionLink("全球", "Index", "Home")</li>
                     <li>@Html.ActionLink("台灣", "TW", "Home")</li> 
                 </ul>
                 <!--
@@ -38,7 +38,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - NASA Hackthon Uncle Team.</p>
         </footer>
     </div>
 
