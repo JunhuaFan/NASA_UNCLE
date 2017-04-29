@@ -1,3 +1,6 @@
+//記錄放大縮小倍數
+let enlargeTime = 0;
+
 //取得世界地圖 world.json (TopoJSON格式)
 d3.json("/Content/data/world.json", function (world) {
 
@@ -113,33 +116,64 @@ d3.json("/Content/data/world.json", function (world) {
 $("#enlargeBtn").click(function() {
     //window.alert("enlargeBtn!");
 
-    let width = $("#svg").attr("width");
-    width = width.slice(0, -1);
-    width = parseInt(width) + 10;
-    $("#svg").attr("width", width + "%");
-    //window.alert("width=" + $("#svg").attr("width"));
+    let widthPixOrg = $("#svg").prop("width").animVal.value;
+    widthPixNew = parseInt(widthPixOrg) * 1.2;
+    $("#svg").attr("width", widthPixNew + "px");
+    $("#svg").css("margin-left", parseInt($("#svg").css("margin-left")) - (widthPixOrg * 0.1) + "px");
 
-    let height = $("#svg").attr("height");
-    height = height.slice(0, -1);
-    height = parseInt(height) + 10;
-    $("#svg").attr("height", height + "%");
-    //window.alert("height=" + $("#svg").attr("height"));
+
+    let heightPixOrg = $("#svg").prop("height").animVal.value;
+    heightPixNew = parseInt(heightPixOrg) * 1.2;
+    $("#svg").attr("height", heightPixNew + "px");
+    $("#svg").css("margin-top", parseInt($("#svg").css("margin-top")) - (heightPixOrg * 0.1) + "px");
+
+    enlargeTime = enlargeTime + 1;
+    
+    //let width = $("#svg").attr("width");
+    //width = width.slice(0, -1);
+    //width = parseInt(width) + 20;
+    //$("#svg").attr("width", width + "%");
+    //$("#svg").css("margin-left",  (parseInt($("#svg").css("margin-left")) - 10) + "%");
+    ////window.alert("width=" + $("#svg").attr("width"));
+
+    //let height = $("#svg").attr("height");
+    //height = height.slice(0, -1);
+    //height = parseInt(height) + 20;
+    //$("#svg").attr("height", height + "%");
+    //$("#svg").css("margin-top", (parseInt($("#svg").css("margin-top")) - 10) + "%");
+    ////window.alert("height=" + $("#svg").attr("height"));
 });
 
 //縮小
 $("#shrinkdownBtn").click(function() {
     //window.alert("shrinkdownBtn!");
 
-    let width = $("#svg").attr("width");
-    width = width.slice(0, -1);
-    width = parseInt(width) - 10;
-    $("#svg").attr("width", width + "%");
-    //window.alert("width=" + $("#svg").attr("width"));
+    if (enlargeTime <= 0) {
+        return;
+    }
 
-    let height = $("#svg").attr("height");
-    height = height.slice(0, -1);
-    height = parseInt(height) - 10;
-    $("#svg").attr("height", height + "%");
-    //window.alert("height=" + $("#svg").attr("height"));
+    let widthPixOrg = $("#svg").prop("width").animVal.value;
+    widthPixNew = parseInt(widthPixOrg) / 1.2;
+    $("#svg").attr("width", widthPixNew + "px");
+    $("#svg").css("margin-left", parseInt($("#svg").css("margin-left")) + ((widthPixOrg/1.2) * 0.1) + "px");
+
+    let heightPixOrg = $("#svg").prop("height").animVal.value;
+    heightPixNew = parseInt(heightPixOrg) / 1.2;
+    $("#svg").attr("height", heightPixNew + "px");
+    $("#svg").css("margin-top", parseInt($("#svg").css("margin-top")) + ((heightPixOrg / 1.2) * 0.1) + "px");
+
+    enlargeTime = enlargeTime - 1;
+
+    //let width = $("#svg").attr("width");
+    //width = width.slice(0, -1);
+    //width = parseInt(width) - 10;
+    //$("#svg").attr("width", width + "%");
+    ////window.alert("width=" + $("#svg").attr("width"));
+
+    //let height = $("#svg").attr("height");
+    //height = height.slice(0, -1);
+    //height = parseInt(height) - 10;
+    //$("#svg").attr("height", height + "%");
+    ////window.alert("height=" + $("#svg").attr("height"));
 
 });
