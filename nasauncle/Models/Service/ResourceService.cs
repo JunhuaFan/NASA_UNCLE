@@ -43,7 +43,7 @@ namespace nasauncle.Models.Service
             var rows = (from row in sData.Worksheet("Sheet1") select row).ToList();
 
             DataTable dt = new DataTable();
-                   // sa  cerrentX cerrentY    waveh tide    uv
+                   //             
 
 
 
@@ -52,12 +52,25 @@ namespace nasauncle.Models.Service
             dt.Columns.Add("dat");
             dt.Columns.Add("lonX");
             dt.Columns.Add("chll");
-            dt.Columns.Add("codeb");
+            dt.Columns.Add("sa");
+            dt.Columns.Add("cerrentX");
+            dt.Columns.Add("cerrentY");
+            dt.Columns.Add("waveh");
+            dt.Columns.Add("tide");
+            dt.Columns.Add("uv");
             foreach (var item in rows)
             {
                 DataRow dr = dt.NewRow();
-                dr["codea"] = item[0];
-                dr["codeb"] = item[1];
+                dr["DateX"] = item[0];
+                dr["dat"] = item[1];
+                dr["lonX"] = item[2];
+                dr["chll"] = item[3];
+                dr["sa"] = item[4];
+                dr["cerrentX"] = item[5];
+                dr["cerrentY"] = item[6];
+                dr["waveh"] = item[7];
+                dr["tide"] = item[8];
+                dr["uv"] = item[9];
                 dt.Rows.Add(dr);
             }
 
@@ -72,12 +85,20 @@ namespace nasauncle.Models.Service
                 SqlBulkCopy SBC = new SqlBulkCopy(Bulkcn);
 
                 //複製到目的地的哪個資料表
-                SBC.DestinationTableName = "codeTmp";
-
+                SBC.DestinationTableName = "SeaData";
+                 
                 //設定你要複製過去的DataTable的每個欄位要對應到目的地的哪個欄位
                 //SBC.ColumnMappings.Add("DataTable的欄位A", "資料庫裡的資料表的的欄位A");
-                SBC.ColumnMappings.Add("codea", "codea");
-                SBC.ColumnMappings.Add("codeb", "codeb");
+                SBC.ColumnMappings.Add("DateX", "DateX");
+                SBC.ColumnMappings.Add("dat", "dat");
+                SBC.ColumnMappings.Add("lonX", "lonX");
+                SBC.ColumnMappings.Add("chll", "chll");
+                SBC.ColumnMappings.Add("sa", "sa");
+                SBC.ColumnMappings.Add("cerrentX", "cerrentX");
+                SBC.ColumnMappings.Add("cerrentY", "cerrentY");
+                SBC.ColumnMappings.Add("waveh", "waveh");
+                SBC.ColumnMappings.Add("tide", "tide");
+                SBC.ColumnMappings.Add("uv", "uv");
 
                 Bulkcn.Open();
 

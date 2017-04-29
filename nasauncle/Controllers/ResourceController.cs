@@ -33,11 +33,7 @@ namespace nasauncle.Controllers
          
         [HttpPost]
         public ActionResult importExcel(HttpPostedFileBase fileuploadExcel)
-        {
-            if (Session["back_loginId"] == null)
-            {
-                return RedirectToAction("backlogin", "Admin");
-            }
+        { 
 
             //匯入資料
             ResourceService service = new ResourceService();

@@ -272,7 +272,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
- 
     <EntityDeploy Include="Models\ModelData1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ModelData1.Designer.cs</LastGenOutput>
@@ -281,11 +280,10 @@
       <DependentUpon>ModelData1.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\output.pubxml" />
- 
     <Content Include="Content\data\county.json" />
     <Content Include="Content\data\county2.json" />
     <Content Include="Content\data\world.json" />
-	
+    <None Include="Properties\PublishProfiles\outputx.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -332,12 +330,9 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
- 
     <Content Include="Views\Resource\importExcel.cshtml" />
- 
     <Content Include="Views\Home\Earth.cshtml" />
     <Content Include="Views\Home\TW.cshtml" />
-	
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
