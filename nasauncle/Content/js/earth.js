@@ -153,8 +153,8 @@ function savePositionAndMarkOnEarth(position) {
 //顯示使用者所在位置經緯度
 function showPosition(position) {
     var m = document.getElementById("msg");
-    m.innerHTML = "目前位置 緯度: " + position.coords.latitude +
-                ", 經度: " + position.coords.longitude;
+    m.innerHTML = "<center>目前位置</center><center>緯度: " + position.coords.latitude +
+                "  </center><center>經度: " + position.coords.longitude + "</center>";
 }
 
 
