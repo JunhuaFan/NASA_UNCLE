@@ -1,3 +1,15 @@
+$(document).ready(function () {
+    console.log("ready!");
+
+    //取得目前使用者所在位置經緯度
+    getLocation();
+
+});
+
+//使用者所在座標
+var userLatitude = 0;
+var userLongitude = 0;
+
 //取得世界地圖 world.json (TopoJSON格式)
 d3.json("/Content/data/county2.json", function (county) {
 
@@ -103,3 +115,61 @@ d3.json("/Content/data/county2.json", function (county) {
     });
 
 });
+
+//取得目前使用者所在位置經緯度
+function getLocation(defer) {
+    if (navigator.geolocation) {//
+        navigator.geolocation.getCurrentPosition(savePositionAndMarkOnEarth);//有拿到位置就呼叫 showPosition 函式
+    } else {
+        m.innerHTML = "您的瀏覽器不支援 顯示地理位置 API ，請使用其它瀏覽器開啟 這個網址";
+    }
+}
+
+//取得使用者目前徑緯度並標示在地球上.
+function savePositionAndMarkOnEarth(position) {
+
+    //緯度 (Latitude)
+    userLatitude = position.coords.latitude;
+
+    //經度 (Longitude)
+    userLongitude = position.coords.longitude;
+
+    //目前使用者座標點.
+    var nowUserAxis = {
+        features: [{
+            "type": "Feature",
+            "properties": { "mag": 3, "time": 1430470821000 },
+            "geometry": { "type": "Point", "coordinates": [userLongitude, userLatitude, 11.5] }
+        }]
+    };
+
+    //========================
+    //建立『危險區』的g群組.
+    d3.select("#svg").selectAll("g.nowUserAxis").data(nowUserAxis.features)
+        .enter().append("g").attr("class", "nowUserAxis");
+
+    //在每個『『危險區』的g群組』後加一個『危險區的<path> tag』
+    //=>執行到此行後, 己可在地球儀上看到N個黑點!
+    var circleDangerArea = d3.select("#svg").selectAll("g.nowUserAxis").append("path");
+    //========================
+
+    ////建立『危險區』的g群組.
+    //d3.select("#svg").selectAll("g.dangerArea").data(dangerArea.features)
+    //    .enter().append("g").attr("class", "dangerArea");
+
+    ////在每個『『危險區』的g群組』後加一個『危險區的<path> tag』
+    ////=>執行到此行後, 己可在地球儀上看到N個黑點!
+    //var circleDangerArea = d3.select("#svg").selectAll("g.dangerArea").append("path");
+    //========================
+
+
+    //顯示使用者所在位置經緯度
+    showPosition(position);
+}
+
+//顯示使用者所在位置經緯度
+function showPosition(position) {
+    var m = document.getElementById("msg");
+    m.innerHTML = "目前位置 緯度: " + position.coords.latitude +
+                ", 經度: " + position.coords.longitude;
+}
